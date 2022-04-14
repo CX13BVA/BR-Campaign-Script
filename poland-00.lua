@@ -4,7 +4,7 @@
 function Init()
     RunScript("DebugView", 1000);
     DisplayTrace("Somewhere in Poland, 1939", 3000);
-    RunScript("RevealObjective0", 5000);
+    RunScript("RevealObjective0", 6000);
 end;
 
 function DebugView()
@@ -65,7 +65,6 @@ end;
 function RevealObjective2()
     ObjectiveChanged(2, 0);
     RunScript("Objective2", 1000);
---    RunScript("Reinforce2", 6000);    This does not work here for some reason.
     Suicide();
 end;
 
@@ -95,7 +94,7 @@ function Objective3()
     if (GetNUnitsInScriptGroup(16, 1) == 0) then
         ObjectiveChanged(3, 1);
         DisplayTrace("The Village is ours!", 2000);
-        RunScript("RevealObjective5");
+        RunScript("RevealObjective5", 1000);
         Suicide();
     end;
 end;
@@ -109,8 +108,11 @@ end;
 function RevealObjective4()
     ObjectiveChanged(4, 0);
     DisplayTrace("Enemy reinforcements spotted, push them back!", 6000);
-    RunScript("Objective4", 8000);
-    RunScript("Reinforce3", 8000); -- This does work unlike the above "Reinforce2", why?
+    if (GetNunitsInScriptGroup(20 > 1)) then
+        RunScript("Objective4", 1000);
+        RunScript("Reinforce3", 8000);
+        Suicide();
+    end;
     Suicide();
 end;
 
@@ -124,15 +126,16 @@ end;
 
 function Vital()
     if  (GetNUnitsInScriptGroup(51) == 0) then
-        DisplayTrace("You have lost the Panzer III, High Command is furious!");
+        DisplayTrace("You have lost the Panzer III, High Command is furious!", 1000);
         RunScript("Lost", 3000);
+        Suicide();
     end;
 end;
 
 function Objective4()
-    if (GetNUnintsInScriptGroup(20) == 0) then
-        DisplayTrace("The enemy counter attack failed.");
+    if (GetNUnitsInScriptGroup(20, 1) == 0) then
         ObjectiveChanged(4, 1);
+        DisplayTrace("The enemy counter attack failed.", 1000);
         Suicide();
     end;
 end;
