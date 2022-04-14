@@ -75,8 +75,8 @@ function RevealObjective3()
 end;
 
 function Reinforce2()
-    LandReinforcement(55);
     DisplayTrace("Time to break the Enemy defense!", 2000);
+    LandReinforcement(55);
     Suicide();
 end;
 
@@ -140,6 +140,11 @@ function RevealObjective5()
     ObjectiveChanged(5,0);
     DisplayTrace("Take out the Enemy Commander.", 2000);
     RunScript("Objective5", 2500);
+    RunScript("Reinforce25", 2000);
+    Suicide();
+end;
+
+function Reinforce25()
     LandReinforcement(24);
     Suicide();
 end;
