@@ -1,9 +1,9 @@
 -- first time making a script, so don't be surprised if it looks terrible or doesn't work at all.
--- 
--- 
+--
+--
 function Init()
     RunScript("DebugView", 1000);
-    DisplayTrace("Somewhere in Poland, 1939", 3000)
+    DisplayTrace("Somewhere in Poland, 1939", 3000);
     RunScript("RevealObjective0", 5000);
 end;
 
@@ -25,7 +25,7 @@ function RevealObjective0()
     ObjectiveChanged(0, 0);
     RunScript("Objective0", 1000);
     LandReinforcement(12); -- spawns snipers
-    Suicide();    
+    Suicide();
 end;
 
 function Objective0()
@@ -47,7 +47,7 @@ end;
 
 function Reinforce1()
     LandReinforcement(33);
-    Suicide();    
+    Suicide();
 end;
 
 function Objective1()
@@ -119,7 +119,7 @@ function Reinforce3()
     LandReinforcement(50);
     RunScript("Vital", 2000);
     Suicide();
-end
+end;
 
 function Vital()
     if  (GetNUnitsInScriptGroup(51) == 0) then
