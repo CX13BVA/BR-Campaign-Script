@@ -57,6 +57,7 @@ function Objective1()
         DisplayTrace("It's time to prepare out main Assault.", 2500);
         RunScript("RevealObjective2", 3000);
         RunScript("RevealObjective3", 4000);
+        RunScript("Reinforce2", 6000);
         Suicide();
     end;
 end;
@@ -64,13 +65,13 @@ end;
 function RevealObjective2()
     ObjectiveChanged(2, 0);
     RunScript("Objective2", 1000);
+--    RunScript("Reinforce2", 6000);    This does not work here for some reason.
     Suicide();
 end;
 
 function RevealObjective3()
     ObjectiveChanged(3, 0);
-    RunScript("Objective3", 2000);
-    RunScript("Reinforce2");
+    RunScript("Objective3", 1000);
     Suicide();
 end;
 
@@ -109,7 +110,7 @@ function RevealObjective4()
     ObjectiveChanged(4, 0);
     DisplayTrace("Enemy reinforcements spotted, push them back!", 6000);
     RunScript("Objective4", 8000);
-    RunScript("Reinforce3", 8000);
+    RunScript("Reinforce3", 8000); -- This does work unlike the above "Reinforce2", why?
     Suicide();
 end;
 
@@ -140,11 +141,11 @@ function RevealObjective5()
     ObjectiveChanged(5,0);
     DisplayTrace("Take out the Enemy Commander.", 2000);
     RunScript("Objective5", 2500);
-    RunScript("Reinforce25", 2000);
+    RunScript("Reinforce24", 2000);
     Suicide();
 end;
 
-function Reinforce25()
+function Reinforce24()
     LandReinforcement(24);
     Suicide();
 end;
