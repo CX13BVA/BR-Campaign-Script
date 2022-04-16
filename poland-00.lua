@@ -12,6 +12,7 @@ function DebugView()
     DisplayTrace("Testmode");
     ShowActiveScripts();
     ChangeWarFog(1);
+    God(0,1)
     Suicide();
 end;
 
@@ -102,18 +103,17 @@ end;
 function Reinforce20()
     LandReinforcement(20);
     RunScript("RevealObjective4", 6000);
+    DisplayTrace("Enemy reinforcements spotted, push them back!", 8000);
+    RunScript("Reinforce3", 10000);
     Suicide();
 end;
 
 function RevealObjective4()
-    ObjectiveChanged(4, 0);
-    DisplayTrace("Enemy reinforcements spotted, push them back!", 6000);
-    if (GetNunitsInScriptGroup(20 > 1)) then
+    if (GetNUnitsInScriptGroup(20)  >= 1) then
+        ObjectiveChanged(4, 0);
         RunScript("Objective4", 1000);
-        RunScript("Reinforce3", 8000);
         Suicide();
     end;
-    Suicide();
 end;
 
 function Reinforce3()
