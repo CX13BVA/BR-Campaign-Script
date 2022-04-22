@@ -41,6 +41,7 @@ function RevealObjective0() -- Objective0, Reinforce20 >> EnemyAdvance0-5
     RunScript("EnemyAdvance3", 2500);
     RunScript("EnemyAdvance4", 2500);
     RunScript("EnemyAdvance5", 2500);
+    RunScript("EnemyAttack0", 60000);
     Suicide();
 end;
 function Reinforce20()
@@ -128,7 +129,6 @@ function EnemyAdvance5() -- enemy arrived at "town" => Reinforce35, Reinforce15,
         DisplayTrace("Enemy main force spotted!", 1000);
         RunScript("Reinforce15", 3500);
         RunScript("Reinforce35", 8000);
-        RunScript("Reinforce36", 14000);
         Suicide();
     end;
 end;
@@ -138,6 +138,11 @@ function Reinforce15()
 end;
 function Reinforce35()
     LandReinforcement(35);
+    Suicide();
+end;
+
+function EnemyAttack0()
+    RunScript("Reinforce36", 14000);
     Suicide();
 end;
 function Reinforce36()
