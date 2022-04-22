@@ -34,7 +34,7 @@ function RevealObjective0() -- Objective0, Reinforce20 >> EnemyAdvance0-5
     DisplayTrace("You (British officer) must survive in order to win.", 1000)
     RunScript("Objective0", 2000);
     RunScript("VillageLost", 3000);
-    RunScript("Reinforce20", 4000);
+    RunScript("Reinforce20", 8000);
     RunScript("EnemyAdvance0", 2500);
     RunScript("EnemyAdvance1", 2500);
     RunScript("EnemyAdvance2", 2500);
