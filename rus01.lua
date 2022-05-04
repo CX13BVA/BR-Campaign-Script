@@ -1,12 +1,12 @@
 -- this is a dummy line to create this file.
 --
---
 -- Unit ID notes
 -- 2,3,4,5 Defensive posts (will be elimentated)
 -- 11,12,13,14,15,16,17 Enemy front spawn when above is defeated. Delay == 8000 + (Italian)
 -- 7,8,9 RP units (trigger for reinforcement)
 -- 20,21,22,23,24,25,26,27 Player Reinforcements (Defense)
 -- 40,41,42,43,(44,45) Italian forces + reinforcements (German)
+-- 777 Player (Officer), 713 Armored Train
 --
 function Init()
     RunScript("DebugView", 1000); -- Testmode (Cheats)
@@ -32,6 +32,12 @@ end;
 function Lost() -- Player looses
     Loose()
     Suicide()
+end;
+function StayAlive() -- Player officer must survive
+    if (GetNUnitsInScriptGroup(777) == 0) then
+        RunScript("Lost", 8000);
+        Suicide();
+    end;
 end;
 function ForceAdvanceBegin() -- landing enemy assault after 38(t) has died.
     if (GetNUnitsInScriptGroup(10) == 0) then
@@ -101,7 +107,6 @@ function EAAdvance6() -- Enemy secured their river side => landing enemy reinfor
         (GetNUnitsInScriptGroup(5) == 0) or
         (GetNUnitsInArea(0, "FactoryCom") == 0) then
         RunScript("REA6", 8000);
-        RunScript("MainAssault", 15000);
         Suicide();
     end;
 end;
@@ -110,7 +115,9 @@ function REA6()
     Suicide();
 end;
 function DefReinforce() -- Player reinforcements
-    RunScript("T26Rein", 1000)
+    RunScript("T26Rein", 1000);
+    RunScript("Victoria", 1000);
+    RunScript("Trenchfiller", 1000);
     Suicide();
 end;
 function T26Rein() -- T26 reinforcement from repair factory
@@ -118,6 +125,14 @@ function T26Rein() -- T26 reinforcement from repair factory
         ChangePlayer(9, 0);
         LandReinforcement(20);
         LandReinforcement(21);
+        Suicide();
+    end;
+end;
+function Victoria() -- Armored Train reinforcement
+    if  (GetNUnitsInArea(0, "ItaVillage") == 0) and
+        (GetNUnitsInScriptGroup(5) == 0) or
+        (GetNUnitsInArea(0, "FactoryCom") == 0) then
+        LandReinforcement(713);
         Suicide();
     end;
 end;
@@ -140,17 +155,23 @@ function ItalianAdvance() -- Italian forces secure their base
     LandReinforcement(40);
     Suicide();
 end;
-function ItalianBase() -- Italian base being reinforced, RG-41,44
-        if (GetNUnitsInArea(0, "ItaVillage") == 0) then
-        LandReinforcement(41);
+function ItalianBase() -- Italian base being reinforced, RG-41
+        if (GetNUnitsInArea(0, "ItaVillage") == 0) and
+            (GetNUnitsInScriptGroup(5) == 0) or
+            (GetNUnitsInArea(0, "FactoryCom") == 0) then
         LandReinforcement(44);
-        RunScript("ItalianBaseSec", 4000);
-        RunScript("PrepItalianAssault", 10000);
+        RunScript("ItalianBaseSec", 10000);
+        RunScript("PrepItalianAssault", 14000);
         Suicide();
     end;
 end;
-function ItalianBaseSec() -- RG-46
-    LandReinforcement(46)
+function ItalianBaseSec() -- RG-44,46
+    LandReinforcement(41);
+    RunScript("SpawnDelayItaBase", 8000);
+    Suicide();
+end;
+function SpawnDelayItaBase()
+    LandReinforcement(46);
     Suicide();
 end;
 function PrepItalianAssault() -- RG-42
@@ -160,9 +181,41 @@ function PrepItalianAssault() -- RG-42
 end;
 function ItaWave1() -- RG-42,43
     if (GetNUnitsInScriptGroup(42) == 0) then
-        RunScript("ItaWave2", 1000);
+        RunScript("ItaWave2", 8000);
         LandReinforcement(42);
         LandReinforcement(43);
         Suicide();
+    end;
+end;
+function ItaWave2() -- RG-11,42,43
+    if (GetNUnitsInScriptGroup(42) <= 1) or
+        (GetNUnitsInScriptGroup(43) <= 1) then
+        RunScript("CombinedAttack", 8000);
+        LandReinforcement(11);
+        LandReinforcement(42);
+        LandReinforcement(43);
+        Suicide();
+    end;
+end;
+function CombinedAttack()
+    if (GetNUnitsInScriptGroup(42) <= 1) or
+        (GetNUnitsInScriptGroup(43) <= 1) then
+        RunScript("FinalAssault1", 18000);
+        RunScript("SpawnDelay1", 5000);
+        LandReinforcement(42);
+        LandReinforcement(43);
+        Suicide();
+    end;
+end;
+function SpawnDelay1()
+    LandReinforcement(45);
+    Suicide();
+end;
+function Trenchfiller()
+    if (GetNUnitsInArea(0, "TrenchA") <= 1) or
+    (GetNUnitsInArea(0, "TrenchB") <= 1) or
+    (GetNUnitsInArea(0, "TrenchC") <= 1) then
+    LandReinforcement(727);
+    Suicide();
     end;
 end;
