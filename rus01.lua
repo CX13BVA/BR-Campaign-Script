@@ -22,7 +22,6 @@ function DebugView() -- Testmode (Cheats)
     DisplayTrace("Testmode", 1000);
     ShowActiveScripts();
     ChangeWarFog(1);
---    God(0,1)
     Suicide();
  end;
 function Winner() -- Player wins
@@ -151,7 +150,7 @@ function EAdvanceIta() -- Italian forces spawn
     end;
 end;
 function ItalianAdvance() -- Italian forces secure their base
-    RunScript("ItalianBase", 1000);
+    RunScript("ItalianBase", 8000);
     LandReinforcement(40);
     Suicide();
 end;
@@ -165,12 +164,12 @@ function ItalianBase() -- Italian base being reinforced, RG-41
         Suicide();
     end;
 end;
-function ItalianBaseSec() -- RG-44,46
+function ItalianBaseSec() -- RG-44
     LandReinforcement(41);
     RunScript("SpawnDelayItaBase", 8000);
     Suicide();
 end;
-function SpawnDelayItaBase()
+function SpawnDelayItaBase() -- RG-46
     LandReinforcement(46);
     Suicide();
 end;
