@@ -9,3 +9,5 @@ Feedback is always welcome, either here (oGitHub), on [Discord](https://discord.
 
 ## Thanks a lot to:
 - **Stanenberg**, for helping me out and showing me the right path and a usefull guide to work with.
+- The guys from the **Global Blitzkrieg Community** (Discord), for keeping me motivated enough to finish and upload maps.
+- Everyone who leaves Feedback.
