@@ -3,25 +3,26 @@
 -- Unit ID notes
 -- 2,3,4,5 Defensive posts (will be elimentated)
 -- 11,12,13,14,15,16,17 Enemy front spawn when above is defeated. Delay == 8000 + (Italian)
--- 7,8,9 RP units (trigger for reinforcement)
+-- 7,8 RP units (trigger for reinforcement)
+-- 9 will switch sides to player after arrival of officer (Car with ID 9) in T26 factory
 -- 20,21,22,23,24,25,26,27 Player Reinforcements (Defense)
 -- 40,41,42,43,(44,45) Italian forces + reinforcements (German)
+-- 60 German artillery
 -- 777 Player (Officer), 713 Armored Train
---
+-- 99 BattleDead
 function Init()
-    RunScript("DebugView", 1000); -- Testmode (Cheats)
+    RunScript("BattleDead", 1000); -- Adds Corpses
     RunScript("ForceAdvanceBegin", 1000) -- landing enemy reinforcements after 38(t) has died.
     RunScript("EBase", 1000); -- enemy establishing a base at the village (south-west).
     RunScript("EAdvance", 1500); -- Enemy assault & reinforcements for the river side.
     RunScript("DefReinforce", 2000); -- Player reinforcements
     RunScript("StayAlive", 2000); -- Officer (player) needs to survive
+    RunScript("RevealObjective0", 2000);
+    RunScript("RevealObjective1", 2000);
     RunScript("EAdvanceIta", 2000); -- Italian advance
 end;
-function DebugView() -- Testmode (Cheats)
-    Password("Panzerklein");
-    DisplayTrace("Testmode", 1000);
-    ShowActiveScripts();
-    ChangeWarFog(1);
+function BattleDead() -- Adds Corpses
+    DamageObject(99,0)
     Suicide();
  end;
 function Winner() -- Player wins
@@ -31,6 +32,16 @@ end;
 function Lost() -- Player looses
     Loose()
     Suicide()
+end;
+function RevealObjective0()
+    ObjectiveChanged(0, 0);
+    RunScript("Objective0", 1000);
+    Suicide();
+end;
+function RevealObjective1()
+    ObjectiveChanged(1, 0);
+    RunScript("Objective1", 1000);
+    Suicide();
 end;
 function StayAlive() -- Player officer must survive
     if (GetNUnitsInScriptGroup(777) == 0) then
@@ -136,6 +147,7 @@ function Victoria() -- Armored Train reinforcement
     end;
 end;
 -- 40,41,42,43,(44,45,46) Italian forces + reinforcements (German)
+-- 60 German artillery
 function EAdvanceIta() -- Italian forces spawn
     if (GetNUnitsInScriptGroup(2) == 0) or
         (GetNUnitsInArea(0, "Village") == 0) and
@@ -150,60 +162,90 @@ function EAdvanceIta() -- Italian forces spawn
     end;
 end;
 function ItalianAdvance() -- Italian forces secure their base
-    RunScript("ItalianBase", 8000);
+    RunScript("ItalianBaseAdvance", 8000);
     LandReinforcement(40);
     Suicide();
 end;
-function ItalianBase() -- Italian base being reinforced, RG-41
+function ItalianBaseAdvance()
         if (GetNUnitsInArea(0, "ItaVillage") == 0) and
             (GetNUnitsInScriptGroup(5) == 0) or
             (GetNUnitsInArea(0, "FactoryCom") == 0) then
-        LandReinforcement(44);
-        RunScript("ItalianBaseSec", 10000);
-        RunScript("PrepItalianAssault", 14000);
+        RunScript("ItalianBase", 8000);
         Suicide();
     end;
 end;
-function ItalianBaseSec() -- RG-44
-    LandReinforcement(41);
+function ItalianBase() -- RG-44
+    LandReinforcement(44);
+    RunScript("ItalianBaseSec", 10000);
+    RunScript("PrepItalianAssault", 14000);
+    Suicide();
+end;
+function ItalianBaseSec() -- RG-46
+    LandReinforcement(46);
     RunScript("SpawnDelayItaBase", 8000);
     Suicide();
 end;
-function SpawnDelayItaBase() -- RG-46
-    LandReinforcement(46);
+function SpawnDelayItaBase() -- RG-41
+    LandReinforcement(41);
     Suicide();
 end;
 function PrepItalianAssault() -- RG-42
-    LandReinforcement(42)
+    LandReinforcement(42);
     RunScript("ItaWave1", 1000);
     Suicide();
 end;
-function ItaWave1() -- RG-42,43
+function ItaWave1() -- RG-42,43,60
     if (GetNUnitsInScriptGroup(42) == 0) then
         RunScript("ItaWave2", 8000);
         LandReinforcement(42);
         LandReinforcement(43);
+        LandReinforcement(60);
         Suicide();
     end;
 end;
-function ItaWave2() -- RG-11,42,43
+function ItaWave2() -- del-RG-60
     if (GetNUnitsInScriptGroup(42) <= 1) or
         (GetNUnitsInScriptGroup(43) <= 1) then
-        RunScript("CombinedAttack", 8000);
-        LandReinforcement(11);
-        LandReinforcement(42);
-        LandReinforcement(43);
+        RunScript("CombinedAttackPrepare", 8000);
+        DeleteReinforcement(60);
         Suicide();
     end;
 end;
-function CombinedAttack()
+function CombinedAttackPrepare() -- RG-11,42,43,60,66
+    LandReinforcement(11);
+    LandReinforcement(42);
+    LandReinforcement(43);
+    LandReinforcement(60);
+    LandReinforcement(66);
+    RunScript("CombinedAttack", 5000);
+    Suicide();
+end;
+function CombinedAttack() -- RG-42,43
     if (GetNUnitsInScriptGroup(42) <= 1) or
         (GetNUnitsInScriptGroup(43) <= 1) then
-        RunScript("FinalAssault1", 18000);
+        RunScript("FinalAssault", 18000);
         RunScript("SpawnDelay1", 5000);
         LandReinforcement(42);
         LandReinforcement(43);
         Suicide();
+    end;
+end;
+function FinalAssault()
+    if (GetNUnitsInScriptGroup(42) <= 1) or
+        (GetNUnitsInScriptGroup(43) <= 1) then
+    RunScript("AssaultIsOver", 1000);
+    LandReinforcement(11);
+    LandReinforcement(42);
+    LandReinforcement(43);
+    Suicide();
+    end;
+end;
+function AssaultIsOver()
+    if (GetNUnitsInScriptGroup(42) <= 1) or
+    (GetNUnitsInScriptGroup(43) <= 1) then
+    ObjectiveChanged(0, 1);
+    ObjectiveChanged(1, 1);
+    RunScript("Winner", 3000);
     end;
 end;
 function SpawnDelay1()
@@ -211,10 +253,41 @@ function SpawnDelay1()
     Suicide();
 end;
 function Trenchfiller()
-    if (GetNUnitsInArea(0, "TrenchA") <= 1) or
-    (GetNUnitsInArea(0, "TrenchB") <= 1) or
-    (GetNUnitsInArea(0, "TrenchC") <= 1) then
+    if (GetNUnitsInArea(0, "TrenchA") <= 3) or
+    (GetNUnitsInArea(0, "TrenchB") <= 3) or
+    (GetNUnitsInArea(0, "TrenchC") <= 3) then
     LandReinforcement(727);
+    Suicide();
+    end;
+end;
+function EnemyWin()
+    if (GetNUnitsInArea(1, "Enemy1")) or
+        (GetNUnitsInArea(1, "Enemy2")) or
+        (GetNUnitsInArea(1, "Enemy3")) or
+        (GetNUnitsInArea(1, "Enemy4")) then
+    DisplayTrace("The enemy has taken Key points in the City", 1000);
+    RunScript("Lost", 8000);
+    Suicide();
+    end;
+end;
+function PlayerBase()
+    if (GetNUnitsInArea(0, "Main Base" == 0)) then
+        DisplayTrace("Our base has been lost!", 1000);
+        RunScript("Lost", 8000);
+        Suicide();
+    end;
+end;
+function BlockeGone()
+    if (GetNUnitsInArea(0, "Blockade" == 0)) then
+        DisplayTrace("The enemy has breached the City", 1000);
+        Suicide();
+    end;
+end;
+function FabriABC()
+    if (GetNUnitsInArea(0, "FabriA")) or
+        (GetNUnitsInArea(0, "FabriB")) or
+        (GetNUnitsInArea(0, "FabriC")) then
+    DisplayTrace("We are loosing the Factory, pull back and reorganize!", 1000);
     Suicide();
     end;
 end;
