@@ -246,6 +246,7 @@ function AssaultIsOver()
     ObjectiveChanged(0, 1);
     ObjectiveChanged(1, 1);
     RunScript("Winner", 3000);
+    Suicide();
     end;
 end;
 function SpawnDelay1()
