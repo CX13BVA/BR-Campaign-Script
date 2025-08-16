@@ -63,7 +63,7 @@ function MainTask()
 	Suicide();
 end;
 
-function IntialReinforcements()
+function InitialReinforcements()
 	DisplayTrace("Scrpit Debug: InitialReinforcements");
 	LandReinforcement(15); -- Spawns Reinforcement group 15
 	Suicide(); -- Very important on Reinforcement scripts, else they're gonna loop forever
@@ -105,4 +105,5 @@ function Westside()
 end;
 
 -- Script not yet tested!
+
 
