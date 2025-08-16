@@ -19,7 +19,7 @@ function Init()
 	RunScript("InitialNoAir", 500); -- Disables Airspawn for Player and AI.
 	RunScript("BattleDead", 1000); -- Adds Corpses and destroyed vehicles/beuildings.
 	RunScript("InitialReinforcements", 3500); -- Initial Reinforcements (ID15).
-	RunScript("InnitialOrders", 3500); -- Starts the first Task.
+	RunScript("InitialOrders", 3500); -- Starts the first Task.
 	RunScript("MainTask", 2000); -- Enables the main task
 end;
 
@@ -105,3 +105,4 @@ function Westside()
 end;
 
 -- Script not yet tested!
+
